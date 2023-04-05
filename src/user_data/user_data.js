@@ -29,4 +29,17 @@ user_data.get("/user_data", async (req, res) => {
     }
 });
 
+user_data.get("/rol_usuario", async (req, res) => {
+    try {
+        await verify(req.headers["authentication"]);
+        const usuario_id = await getId(req.headers["authentication"]);
+        const usuario = await Usuarios.findByPk(usuario_id);
+        res.status(200).json({
+            rol: usuario.rol
+        });
+    } catch (err) {
+        res.status(401).send(err.message);
+    }
+});
+
 export default user_data;
