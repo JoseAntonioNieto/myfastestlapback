@@ -1,7 +1,13 @@
+import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import user_data from "./user_data/user_data.js";
 import { sequelize } from "./database/database.js";
+
+import "./models/Usuarios.js";
+
+dotenv.config();
+const PORT = process.env.PORT;
 
 const app =  express();
 
@@ -9,13 +15,13 @@ app.use(cors())
 
 app.use(express.json());
 
+try {
+  await sequelize.sync({alert: true});
+  console.log('Connection has been established successfully.');
+} catch (error) {
+  console.error('Unable to connect to the database:', error);
+}
+
 app.use("/api", user_data);
 
-try {
-    await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  }
-
-app.listen(5000, () => console.log('Servidor iniciado en el puerto 5000'));
+app.listen(PORT, () => console.log('Servidor iniciado en el puerto 5000'));

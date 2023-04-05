@@ -1,6 +1,6 @@
 import { OAuth2Client } from "google-auth-library";
 
-async function verify(token) {
+export async function verify(token) {
     const client = new OAuth2Client('626104102087-raim7uq02tefr5djn5sppq38ka3ksihr.apps.googleusercontent.com');
     const ticket = await client.verifyIdToken({
         idToken: token,
@@ -10,4 +10,12 @@ async function verify(token) {
     return payload;
 }
 
-export default verify;
+export async function getId(token) {
+    const client = new OAuth2Client('626104102087-raim7uq02tefr5djn5sppq38ka3ksihr.apps.googleusercontent.com');
+    const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: '626104102087-raim7uq02tefr5djn5sppq38ka3ksihr.apps.googleusercontent.com',
+    });
+    const payload = ticket.getUserId();
+    return payload;
+}
