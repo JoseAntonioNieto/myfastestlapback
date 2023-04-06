@@ -5,7 +5,8 @@ import user_data from "./user_data/user_data.js";
 import { sequelize } from "./database/database.js";
 
 import "./models/Usuarios.js";
-import "./models/Vehiculos.js"
+import "./models/Vehiculos.js";
+import "./models/Usuarios_Vehiculos.js"
 
 dotenv.config();
 const PORT = process.env.PORT;
