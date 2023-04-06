@@ -10,4 +10,6 @@ export const UsuariosVehiculos = sequelize.define('usuarios_vehiculo', {
         type: DataTypes.INTEGER,
         primaryKey: true
     }
+}, {
+    timestamps: false
 });
