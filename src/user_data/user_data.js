@@ -17,8 +17,6 @@ user_data.get("/user_data", async (req, res) => {
             }
         });
 
-        console.log(cantidad);
-
         if (cantidad == 0) {
             usuario = await Usuarios.create({usuario_id, rol});
         }
