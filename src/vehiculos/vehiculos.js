@@ -57,4 +57,37 @@ vehiculos.get("/vehiculos", async (req, res) => {
     }
 });
 
+vehiculos.delete("/vehiculos/:matricula", async (req, res) => {
+    try {
+        await verify(req.headers["authentication"]);
+        const usuario_id = await getId(req.headers["authentication"]);
+        await UsuariosVehiculos.destroy({
+            where: {
+                matricula: req.params.matricula,
+                usuario_id: usuario_id
+            }
+        });
+
+        const mat_veh_usu_ex = await UsuariosVehiculos.count({
+            where: {
+                matricula: req.params.matricula
+            }
+        });
+
+        if (mat_veh_usu_ex == 0) {
+            await Vehiculos.destroy({
+                where: {
+                    matricula: req.params.matricula
+                }
+            });
+        }
+
+        res.status(200).json({
+            eliminado: true
+        });
+    } catch (err) {
+        res.status(401).send(err.message);
+    }
+});
+
 export default vehiculos;
