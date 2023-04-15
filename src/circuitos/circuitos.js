@@ -6,7 +6,7 @@ import { Circuitos } from "../models/Circuitos.js";
 
 const circuitos = exppress.Router();
 
-circuitos.get("/circuitos", async (req, res) => {
+circuitos.post("/getCircuitos", async (req, res) => {
 
     const saltos = req.body.pagina * 9 - 9;
 
