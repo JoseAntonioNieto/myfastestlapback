@@ -9,6 +9,7 @@ import { sequelize } from "./database/database.js";
 import "./models/Usuarios.js";
 import "./models/Vehiculos.js";
 import "./models/Usuarios_Vehiculos.js";
+import "./models/Reservas.js"
 
 dotenv.config();
 const PORT = process.env.PORT;
