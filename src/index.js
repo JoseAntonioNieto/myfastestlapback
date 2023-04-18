@@ -4,6 +4,7 @@ import cors from "cors";
 import user_data from "./user_data/user_data.js";
 import vehiculos from "./vehiculos/vehiculos.js";
 import circuitos from "./circuitos/circuitos.js";
+import reservas from "./reservas/reservas.js";
 import { sequelize } from "./database/database.js";
 
 import "./models/Usuarios.js";
@@ -30,5 +31,6 @@ try {
 app.use("/api", user_data);
 app.use("/api", vehiculos);
 app.use("/api", circuitos);
+app.use("/api", reservas);
 
 app.listen(PORT, () => console.log('Servidor iniciado en el puerto 5000'));
