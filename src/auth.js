@@ -1,20 +1,23 @@
 import { OAuth2Client } from "google-auth-library";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export async function verify(token) {
-    const client = new OAuth2Client('626104102087-raim7uq02tefr5djn5sppq38ka3ksihr.apps.googleusercontent.com');
+    const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
     const ticket = await client.verifyIdToken({
         idToken: token,
-        audience: '626104102087-raim7uq02tefr5djn5sppq38ka3ksihr.apps.googleusercontent.com',
+        audience: process.env.GOOGLE_CLIENT_ID,
     });
     const payload = ticket.getPayload();
     return payload;
 }
 
 export async function getId(token) {
-    const client = new OAuth2Client('626104102087-raim7uq02tefr5djn5sppq38ka3ksihr.apps.googleusercontent.com');
+    const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
     const ticket = await client.verifyIdToken({
         idToken: token,
-        audience: '626104102087-raim7uq02tefr5djn5sppq38ka3ksihr.apps.googleusercontent.com',
+        audience: process.env.GOOGLE_CLIENT_ID,
     });
     const payload = ticket.getUserId();
     return payload;
