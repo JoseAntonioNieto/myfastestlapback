@@ -58,4 +58,18 @@ circuitos.post("/getCircuitos", async (req, res) => {
     }
 });
 
+circuitos.get("/circuito/:id", async (req, res) => {
+    try {
+        const circuito = await Circuitos.findOne({
+            where: {
+                id_circuito: req.params.id
+            }
+        });
+        res.status(200).json(circuito);
+    } catch (err) {
+        res.status(404).send(err.message);
+    }
+
+});
+
 export default circuitos;
