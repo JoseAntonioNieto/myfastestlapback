@@ -1,15 +1,25 @@
 import express from "express";
 import { Reservas } from "../models/Reservas.js";
 import { Circuitos } from "../models/Circuitos.js";
+import { Op } from 'sequelize';
 
 const reservas = express.Router();
 
 reservas.get("/reservas/:idCircuito", async (req, res) => {
     const idCircuito = parseInt(req.params.idCircuito);
     try {
+        const date = new Date();
+
+        date.setDate(date.getDate() + 1);
+
+        const fechaComparar = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+
         const reservas = await Reservas.findAll({
             where: {
-                id_circuito: idCircuito
+                id_circuito: idCircuito,
+                fecha: {
+                    [Op.gt]: fechaComparar
+                }
             }
         })
 
