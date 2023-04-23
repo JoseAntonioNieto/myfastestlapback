@@ -105,7 +105,7 @@ reservas_usuario.post("/usuario/reservas", async (req, res) => {
     }
 });
 
-reservas_usuario.delete("/usuario/reservas", async (req, res) => {
+reservas_usuario.delete("/usuario/reservas/:id_reserva", async (req, res) => {
     try {
         await verify(req.headers["authentication"]);
         const usuario_id = await getId(req.headers["authentication"]);
@@ -113,7 +113,7 @@ reservas_usuario.delete("/usuario/reservas", async (req, res) => {
         const reserva_usuario = await UsuariosReservas.destroy({
             where: {
                 usuario_id: usuario_id,
-                id_reserva: req.body.id_reserva
+                id_reserva: parseInt(req.params.id_reserva)
             }
         });
 
@@ -126,11 +126,10 @@ reservas_usuario.delete("/usuario/reservas", async (req, res) => {
         for (let i = 0; i < vehiculosDelUsuario.length; i++) {
             const reserva_vehiculo = await VehiculosReservas.destroy({
                 where: {
-                    id_reserva: req.body.id_reserva,
+                    id_reserva: parseInt(req.params.id_reserva),
                     matricula: vehiculosDelUsuario[i].matricula
                 }
             });
-            
         }
 
         res.status(200).json({
