@@ -5,6 +5,7 @@ import { Circuitos } from "../models/Circuitos.js";
 import { UsuariosReservas } from "../models/Usuarios_Reservas.js";
 import { VehiculosReservas } from "../models/Vehiculos_Reservas.js";
 import { UsuariosVehiculos } from "../models/Usuarios_Vehiculos.js";
+import { Op } from 'sequelize';
 
 const reservas_usuario = express.Router();
 
@@ -12,6 +13,12 @@ reservas_usuario.get("/usuario/reservas", async (req, res) => {
     try {
         await verify(req.headers["authentication"]);
         const usuario_id = await getId(req.headers["authentication"]);
+
+        const date = new Date();
+
+        date.setDate(date.getDate() + 1);
+
+        const fechaComparar = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
 
         const reservas_usuario = await UsuariosReservas.findAll({
             where: {
@@ -24,19 +31,25 @@ reservas_usuario.get("/usuario/reservas", async (req, res) => {
         for (let i = 0; i < reservas_usuario.length; i++) {
             const reserva = await Reservas.findOne({
                 where: {
-                    id_reserva: reservas_usuario[i].id_reserva
+                    id_reserva: reservas_usuario[i].id_reserva,
+                    fecha: {
+                        [Op.gt]: fechaComparar
+                    }
                 }
             })
 
-            const circuito = await Circuitos.findOne({
-                where: {
-                    id_circuito: reserva.id_circuito
-                }
-            });
+            if (reserva != null) {
 
-            todosCircuitos.push([reserva, {
-                circuito: circuito.nombre
-            }]);
+                const circuito = await Circuitos.findOne({
+                    where: {
+                        id_circuito: reserva.id_circuito
+                    }
+                });
+                
+                todosCircuitos.push([reserva, {
+                    circuito: circuito.nombre
+                }]);
+            }
         }
 
         res.status(200).json(todosCircuitos);
