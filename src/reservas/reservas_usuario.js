@@ -4,6 +4,7 @@ import { Reservas } from "../models/Reservas.js";
 import { Circuitos } from "../models/Circuitos.js";
 import { UsuariosReservas } from "../models/Usuarios_Reservas.js";
 import { VehiculosReservas } from "../models/Vehiculos_Reservas.js";
+import { UsuariosVehiculos } from "../models/Usuarios_Vehiculos.js";
 
 const reservas_usuario = express.Router();
 
@@ -89,6 +90,43 @@ reservas_usuario.post("/usuario/reservas", async (req, res) => {
     } catch (err) {
         res.status(401).send(err.message);
     }
+});
+
+reservas_usuario.delete("/usuario/reservas", async (req, res) => {
+    try {
+        await verify(req.headers["authentication"]);
+        const usuario_id = await getId(req.headers["authentication"]);
+
+        const reserva_usuario = await UsuariosReservas.destroy({
+            where: {
+                usuario_id: usuario_id,
+                id_reserva: req.body.id_reserva
+            }
+        });
+
+        const vehiculosDelUsuario = await UsuariosVehiculos.findAll({
+            where: {
+                usuario_id: usuario_id
+            }
+        });
+
+        for (let i = 0; i < vehiculosDelUsuario.length; i++) {
+            const reserva_vehiculo = await VehiculosReservas.destroy({
+                where: {
+                    id_reserva: req.body.id_reserva,
+                    matricula: vehiculosDelUsuario[i].matricula
+                }
+            });
+            
+        }
+
+        res.status(200).json({
+            eliminada: "si"
+        });
+    } catch (err) {
+        res.status(401).send(err.message);
+    }
+
 });
 
 export default reservas_usuario;
