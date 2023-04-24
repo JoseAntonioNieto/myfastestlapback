@@ -1,6 +1,10 @@
 import express from "express";
 import { Reservas } from "../models/Reservas.js";
 import { Circuitos } from "../models/Circuitos.js";
+import { Usuarios } from "../models/Usuarios.js";
+import { verify, getId } from "../auth.js";
+import QueryTypes from "sequelize";
+import { sequelize } from "../database/database.js";
 import { Op } from 'sequelize';
 
 const reservas = express.Router();
@@ -39,5 +43,35 @@ reservas.get("/reservas/:idCircuito", async (req, res) => {
         res.status(401).send(err.message);
     }
 });
+
+reservas.post("/reservas", async (req, res) => {
+    const reserva = req.body;
+    try {
+        await verify(req.headers["authentication"]);
+        const usuario_id = await getId(req.headers["authentication"]);
+
+        const usuario = await Usuarios.findOne({
+            where: {
+                usuario_id: usuario_id
+            }
+        });
+
+        if (usuario.rol == "admin") {
+            const max_id_reserva = await sequelize.query(`SELECT MAX(id_reserva) FROM reservas`);
+            const id_reserva = max_id_reserva[0][0].max + 1;
+            const reserva_insertar = {
+                id_reserva: id_reserva,
+                ...reserva
+            }
+            const reservaGuardada = await Reservas.create(reserva_insertar);
+            res.status(200).json(reservaGuardada);
+        } else {
+            res.status(401).send("El rol que tienes asignado no puede realizar esta acción");
+        }
+    } catch (err) {
+        res.status(401).send(err.message);
+    }
+
+})
 
 export default reservas;
