@@ -3,6 +3,9 @@ import { Op } from "sequelize";
 import QueryTypes from "sequelize";
 import { sequelize } from "../database/database.js";
 import { Circuitos } from "../models/Circuitos.js";
+import { Usuarios } from "../models/Usuarios.js";
+import { verify, getId } from "../auth.js";
+import { CircuitosUsuarios } from "../models/Circuitos_Usuarios.js";
 
 const circuitos = exppress.Router();
 
@@ -71,5 +74,33 @@ circuitos.get("/circuito/:id", async (req, res) => {
     }
 
 });
+
+circuitos.get("/circuitosUsuario", async (req, res) => {
+    try {
+        await verify(req.headers["authentication"]);
+        const usuario_id = await getId(req.headers["authentication"]);
+
+        const usuario = await Usuarios.findOne({
+            where: {
+                usuario_id: usuario_id
+            }
+        });
+
+        if (usuario.rol == "admin") {
+            const circuitos = await CircuitosUsuarios.findAll({
+                where: {
+                    usuario_id: usuario_id
+                },
+                
+            });
+            res.status(200).json(circuitos);
+        } else {
+            res.status(401).send("El rol que tienes asignado no puede realizar esta acción");
+        }
+    } catch (err) {
+        res.status(401).send(err.message);
+    }
+    
+})
 
 export default circuitos;

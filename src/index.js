@@ -13,6 +13,7 @@ import "./models/Vehiculos.js";
 import "./models/Usuarios_Vehiculos.js";
 import "./models/Reservas.js";
 import "./models/Usuarios_Reservas.js"
+import "./models/Circuitos.js"
 
 dotenv.config();
 const PORT = process.env.PORT;
