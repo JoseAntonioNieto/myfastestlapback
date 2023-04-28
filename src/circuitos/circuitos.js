@@ -77,6 +77,7 @@ circuitos.get("/circuito/:id", async (req, res) => {
 
 circuitos.get("/circuitosUsuario", async (req, res) => {
     try {
+        console.log(req.headers["authentication"]);
         await verify(req.headers["authentication"]);
         const usuario_id = await getId(req.headers["authentication"]);
 
@@ -91,9 +92,19 @@ circuitos.get("/circuitosUsuario", async (req, res) => {
                 where: {
                     usuario_id: usuario_id
                 },
-                
             });
-            res.status(200).json(circuitos);
+            const circuitoTotal = [];
+
+            for (let i = 0; i < circuitos.length; i++) {
+                const circuito = await Circuitos.findOne({
+                    where: {
+                        id_circuito: circuitos[i].id_circuito
+                    }
+                });
+
+                circuitoTotal.push(circuito);
+            }
+            res.status(200).json(circuitoTotal);
         } else {
             res.status(401).send("El rol que tienes asignado no puede realizar esta acción");
         }
