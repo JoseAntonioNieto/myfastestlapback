@@ -2,6 +2,8 @@ import express from "express";
 import { Reservas } from "../models/Reservas.js";
 import { Circuitos } from "../models/Circuitos.js";
 import { Usuarios } from "../models/Usuarios.js";
+import { UsuariosReservas } from "../models/Usuarios_Reservas.js";
+import { VehiculosReservas } from "../models/Vehiculos_Reservas.js";
 import { verify, getId } from "../auth.js";
 import QueryTypes from "sequelize";
 import { sequelize } from "../database/database.js";
@@ -71,7 +73,49 @@ reservas.post("/reservas", async (req, res) => {
     } catch (err) {
         res.status(401).send(err.message);
     }
+})
 
+reservas.delete("/reservas/:id", async (req, res) => {
+    try {
+        await verify(req.headers["authentication"]);
+        const usuario_id = await getId(req.headers["authentication"]);
+
+        const usuario = await Usuarios.findOne({
+            where: {
+                usuario_id: usuario_id
+            }
+        });
+
+        if (usuario.rol == "admin") { 
+            const id = parseInt(req.params.id);
+
+            await UsuariosReservas.destroy({
+                where: {
+                    id_reserva: id
+                }
+            })
+
+            await VehiculosReservas.destroy({
+                where: {
+                    id_reserva: id
+                }
+            })
+
+            await Reservas.destroy({
+                where: {
+                    id_reserva: id
+                }
+            })
+
+            res.status(200).json({
+                eliminado: true
+            });
+        }  else {
+            res.status(401).send("El rol que tienes asignado no puede realizar esta acción");
+        }
+    } catch (err) {
+        res.status(401).send(err.message);
+    }
 })
 
 export default reservas;
