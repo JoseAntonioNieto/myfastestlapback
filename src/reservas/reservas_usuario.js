@@ -5,6 +5,7 @@ import { Circuitos } from "../models/Circuitos.js";
 import { UsuariosReservas } from "../models/Usuarios_Reservas.js";
 import { VehiculosReservas } from "../models/Vehiculos_Reservas.js";
 import { UsuariosVehiculos } from "../models/Usuarios_Vehiculos.js";
+import { Usuarios } from "../models/Usuarios.js";
 import { Op } from 'sequelize';
 
 const reservas_usuario = express.Router();
@@ -45,7 +46,7 @@ reservas_usuario.get("/usuario/reservas", async (req, res) => {
                         id_circuito: reserva.id_circuito
                     }
                 });
-                
+
                 todosCircuitos.push([reserva, {
                     circuito: circuito.nombre
                 }]);
@@ -84,7 +85,7 @@ reservas_usuario.post("/usuario/reservas", async (req, res) => {
                 usuario_id: usuario_id,
                 id_reserva: req.body.id_reserva
             });
-    
+
             const reserva_vehiculo = await VehiculosReservas.create({
                 id_reserva: req.body.id_reserva,
                 matricula: req.body.matricula
@@ -139,6 +140,51 @@ reservas_usuario.delete("/usuario/reservas/:id_reserva", async (req, res) => {
         res.status(401).send(err.message);
     }
 
+});
+
+reservas_usuario.delete("/admin/reservas/:matricula/:id_reserva", async (req, res) => {
+    try {
+        await verify(req.headers["authentication"]);
+        const usuario_id = await getId(req.headers["authentication"]);
+
+        const usuario = await Usuarios.findOne({
+            where: {
+                usuario_id: usuario_id
+            }
+        });
+
+        if (usuario.rol == "admin") {
+            const matricula = req.params.matricula;
+
+            const usuario_vehiculo = await UsuariosVehiculos.findOne({
+                where: {
+                    matricula: matricula
+                }
+            });
+
+            await UsuariosReservas.destroy({
+                where: {
+                    id_reserva: req.params.id_reserva,
+                    usuario_id: usuario_vehiculo.usuario_id
+                }
+            })
+
+            await VehiculosReservas.destroy({
+                where: {
+                    id_reserva: req.params.id_reserva,
+                    matricula: matricula
+                }
+            })
+
+            res.status(200).json({
+                eliminada: "si"
+            });
+        } else {
+            res.status(401).send("El rol que tienes asignado no puede realizar esta acción");
+        }
+    } catch (err) {
+        res.status(401).send(err.message);
+    }
 });
 
 export default reservas_usuario;
