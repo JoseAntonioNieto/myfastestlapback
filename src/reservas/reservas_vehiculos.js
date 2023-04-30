@@ -20,7 +20,7 @@ reservas_vehiculos.get('/vehiculos/reservas/:id', async (req, res) => {
             }
         });
 
-        if (true) {
+        if (usuario.rol == "admin") {
             const vehiculos =  await VehiculosReservas.findAll({
                 where: {
                     id_reserva: req.params.id
@@ -50,6 +50,7 @@ reservas_vehiculos.get('/vehiculos/reservas/:id', async (req, res) => {
 
                 arrVehiculos.push({
                     nombre_circuito: circuito.nombre,
+                    nombre_reserva: reserva.titulo,
                     ...vehiculo.dataValues,
                 });
             }
