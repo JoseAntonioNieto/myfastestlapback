@@ -6,6 +6,7 @@ import vehiculos from "./vehiculos/vehiculos.js";
 import circuitos from "./circuitos/circuitos.js";
 import reservas from "./reservas/reservas.js";
 import reservas_usuario from "./reservas/reservas_usuario.js";
+import reservas_vehiculos from "./reservas/reservas_vehiculos.js";
 import { sequelize } from "./database/database.js";
 
 import "./models/Usuarios.js";
@@ -36,5 +37,6 @@ app.use("/api", vehiculos);
 app.use("/api", circuitos);
 app.use("/api", reservas);
 app.use("/api", reservas_usuario);
+app.use("/api", reservas_vehiculos);
 
 app.listen(PORT, () => console.log('Servidor iniciado en el puerto 5000'));
