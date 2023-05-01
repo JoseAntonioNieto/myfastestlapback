@@ -16,7 +16,7 @@ vehiculos.post("/vehiculos", async (req, res) => {
             }
         });
 
-        if (condition) {
+        if (vehiculo_existe == 0) {
             const vehiculo = await Vehiculos.create({
                 matricula: req.body.matricula,
                 nombre_conductor: req.body.nombre_conductor,
