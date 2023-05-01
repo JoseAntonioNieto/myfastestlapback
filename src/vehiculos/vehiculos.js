@@ -29,10 +29,13 @@ vehiculos.post("/vehiculos", async (req, res) => {
                 usuario_id: usuario_id
             });
     
-            res.status(200).json(vehiculo);
+            res.status(200).json({
+                ...vehiculo,
+                insertado: "si"
+            });
         } else {
             res.status(200).json({
-                eliminado: false
+                insertado: "no"
             });
         }
 
