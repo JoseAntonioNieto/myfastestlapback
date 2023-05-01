@@ -8,6 +8,8 @@ import reservas from "./reservas/reservas.js";
 import reservas_usuario from "./reservas/reservas_usuario.js";
 import reservas_vehiculos from "./reservas/reservas_vehiculos.js";
 import { sequelize } from "./database/database.js";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
 
 import "./models/Usuarios.js";
 import "./models/Vehiculos.js";
@@ -21,7 +23,43 @@ const PORT = process.env.PORT;
 
 const app =  express();
 
-app.use(cors())
+// Swagger
+const options = {
+  definition: {
+    info: {
+      title: "Api MyFastestLap",
+      version: "0.1.0",
+      description:
+        "Documentacion Api de las reservas en circuitos",
+      license: {
+        name: "MIT",
+        url: "https://spdx.org/licenses/MIT.html",
+      },
+      contact: {
+        name: "Jose Antonio",
+        url: "https://github.com/JoseAntonioNieto",
+        email: "gokugamer243@gmail.com",
+      },
+    },
+    servers: [
+      {
+        url: "http://localhost:5000",
+      },
+    ],
+  },
+  apis: ["./src/vehiculos/vehiculos.js"],
+};
+
+const specs = swaggerJSDoc(options);
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(specs)
+);
+
+// Swagger
+
+app.use(cors());
 
 app.use(express.json());
 
