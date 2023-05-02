@@ -67,7 +67,7 @@ const vehiculos = express.Router();
  *            description: Matricula del vehiculo a eliminar
  *      responses:
  *          200:
- *              description: Cliente creado
+ *              description: Vehiculo eliminado
  *              content:
  *                  application/json:
  *                      type: array

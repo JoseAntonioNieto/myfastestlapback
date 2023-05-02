@@ -11,6 +11,84 @@ import { Op } from 'sequelize';
 
 const reservas = express.Router();
 
+
+/**
+ * @swagger
+ * tags:
+ *  name: Vehiculos
+ *  description: Reservas del circuto
+ * /api/reservas/{idCircuito}:
+ *  get:
+ *      sumary: Obtener todas las reservas de un circuito
+ *      tags: [Reservas]
+ *      consumes:
+ *          - application/json
+ *      parameters:
+ *          - in: path
+ *            name: idCircuito
+ *            schema:
+ *              type: number
+ *            required: true
+ *            description: Id del circuito
+ *      responses:
+ *          200:
+ *              description: Reservas del circuito
+ *              content:
+ *                  application/json:
+ *                      type: array
+ * /api/reservas:
+ *  post:
+ *      sumary: Crear una reserva
+ *      tags: [Reservas]
+ *      consumes:
+ *          - application/json
+ *      schema:
+ *          type: object
+ *          required:
+ *              - id_circuito
+ *              - fecha
+ *              - hora_inicio
+ *              - hora_fin
+ *              - titulo
+ *          properties:
+ *              id_circuito:
+ *                  type: number
+ *              fecha:
+ *                  type: string
+ *                  format: date
+ *              hora_inicio:
+ *                  type: string
+ *                  format: time
+ *              hora_fin:
+ *                  type: string
+ *                  format: time
+ *              titulo:
+ *                  type: string
+ *      responses:
+ *          200:
+ *              description: Cliente creado
+ *              content:
+ *                  application/json:
+ *                      type: array
+ * /api/reservas/{id}:
+ *  delete:
+ *      summary: Elimina una reserva
+ *      tags: [Reservas]
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: number
+ *            required: true
+ *            description: Id de la reserva a eliminar
+ *      responses:
+ *          200:
+ *              description: Reserva eliminada
+ *              content:
+ *                  application/json:
+ *                      type: array
+ */
+
 reservas.get("/reservas/:idCircuito", async (req, res) => {
     const idCircuito = parseInt(req.params.idCircuito);
     try {
