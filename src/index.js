@@ -56,7 +56,8 @@ const options = {
       }
     },
   },
-  apis: ["./src/vehiculos/vehiculos.js", "./src/user_data/user_data.js", "./src/reservas/reservas.js", "./src/reservas/reservas_vehiculos.js"],
+  apis: ["./src/vehiculos/vehiculos.js", "./src/user_data/user_data.js", "./src/reservas/reservas.js", "./src/reservas/reservas_vehiculos.js",
+  "./src/reservas/reservas_usuario.js", "./src/circuitos/circuitos.js"],
 };
 
 const specs = swaggerJSDoc(options);

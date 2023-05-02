@@ -10,6 +10,86 @@ import { Op } from 'sequelize';
 
 const reservas_usuario = express.Router();
 
+/**
+ * @swagger
+ * tags:
+ *  name: Vehiculos_Reserva
+ *  description: Vehiculo de la reserva
+ * /api/usuario/reservas:
+ *  get:
+ *      summary: Obtiene las reservas del usuario
+ *      tags: [Reservas_Usuario]
+ *      consumes:
+ *          - application/json
+ *      responses:
+ *          200:
+ *              description: Reservas del usuario
+ *              content:
+ *                  application/json:
+ *                      type: array
+ *  post:
+ *      sumary: Realiza una reserva
+ *      tags: [Reservas_Usuario]
+ *      consumes:
+ *          - application/json
+ *      schema:
+ *          type: object
+ *          required:
+ *              - id_reserva
+ *              - matricula
+ *          properties:
+ *              id_reserva:
+ *                  type: number
+ *              matricula:
+ *                  type: string
+ *      responses:
+ *          200:
+ *              description: Reserva realizada
+ *              content:
+ *                  application/json:
+ *                      type: array
+ * /api/usuario/reservas/{id_reserva}:
+ *  delete:
+ *      summary: Cancela una reserva
+ *      tags: [Reservas_Usuario]
+ *      parameters:
+ *          - in: path
+ *            name: id_reserva
+ *            schema:
+ *              type: number
+ *            required: true
+ *            description: Id de la reserva a cancelar
+ *      responses:
+ *          200:
+ *              description: Reserva cancelada
+ *              content:
+ *                  application/json:
+ *                      type: array
+ * /api/admin/reservas/{matricula}/{id_reserva}:
+ *  delete:
+ *      summary: Cancela una reserva
+ *      tags: [Reservas_Usuario]
+ *      parameters:
+ *          - in: path
+ *            name: matricula
+ *            schema:
+ *              type: number
+ *            required: true
+ *            description: Matricula del vehiculo
+ *          - in: path
+ *            name: id_reserva
+ *            schema:
+ *              type: number
+ *            required: true
+ *            description: Id de la reserva a cancelar
+ *      responses:
+ *          200:
+ *              description: Reserva cancelada
+ *              content:
+ *                  application/json:
+ *                      type: array
+ */
+
 reservas_usuario.get("/usuario/reservas", async (req, res) => {
     try {
         await verify(req.headers["authentication"]);
