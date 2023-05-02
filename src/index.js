@@ -21,7 +21,7 @@ import "./models/Circuitos.js"
 dotenv.config();
 const PORT = process.env.PORT;
 
-const app =  express();
+const app = express();
 
 // Swagger
 const options = {
@@ -46,8 +46,17 @@ const options = {
         url: "http://localhost:5000",
       },
     ],
+    components: {
+      securitySchemes: {
+        ApiKeyAuth: {
+          type: "apiKey",
+          in: "header",
+          name: "authentication",
+        }
+      }
+    },
   },
-  apis: ["./src/vehiculos/vehiculos.js"],
+  apis: ["./src/vehiculos/vehiculos.js", "./src/user_data/user_data.js"],
 };
 
 const specs = swaggerJSDoc(options);
@@ -64,7 +73,7 @@ app.use(cors());
 app.use(express.json());
 
 try {
-  await sequelize.sync({alert: true});
+  await sequelize.sync({ alert: true });
   console.log('Connection has been established successfully.');
 } catch (error) {
   console.error('Unable to connect to the database:', error);

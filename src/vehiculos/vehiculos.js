@@ -50,7 +50,7 @@ const vehiculos = express.Router();
  *          - application/json
  *      responses:
  *          200:
- *              description: Cliente creado
+ *              description: Vehiculos del usuario
  *              content:
  *                  application/json:
  *                      type: array
