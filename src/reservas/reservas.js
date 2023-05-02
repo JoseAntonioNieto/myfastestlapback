@@ -15,7 +15,7 @@ const reservas = express.Router();
 /**
  * @swagger
  * tags:
- *  name: Vehiculos
+ *  name: Reservas
  *  description: Reservas del circuto
  * /api/reservas/{idCircuito}:
  *  get:

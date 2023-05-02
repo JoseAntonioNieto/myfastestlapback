@@ -8,6 +8,31 @@ import { Circuitos } from "../models/Circuitos.js";
 
 const reservas_vehiculos = express.Router();
 
+/**
+ * @swagger
+ * tags:
+ *  name: Vehiculos_Reserva
+ *  description: Vehiculo de la reserva
+ * /api/vehiculos/reservas/{id}:
+ *  get:
+ *      sumary: Obtener todas las reservas de un circuito
+ *      tags: [Vehiculos_Reserva]
+ *      consumes:
+ *          - application/json
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: number
+ *            required: true
+ *            description: Id de la reserva
+ *      responses:
+ *          200:
+ *              description: Vehiculos de la reserva
+ *              content:
+ *                  application/json:
+ *                      type: array
+ */
 
 reservas_vehiculos.get('/vehiculos/reservas/:id', async (req, res) => {
     try {
