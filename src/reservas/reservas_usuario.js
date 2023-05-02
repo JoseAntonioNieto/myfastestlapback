@@ -32,16 +32,20 @@ const reservas_usuario = express.Router();
  *      tags: [Reservas_Usuario]
  *      consumes:
  *          - application/json
- *      schema:
- *          type: object
- *          required:
- *              - id_reserva
- *              - matricula
- *          properties:
- *              id_reserva:
- *                  type: number
- *              matricula:
- *                  type: string
+ *      parameters:
+ *          - in: body
+ *            name: Reserva del usuario
+ *            description: Reserva del usuario
+ *            schema:
+ *                  type: object
+ *                  required:
+ *                      - id_reserva
+ *                      - matricula
+ *                  properties:
+ *                      id_reserva:
+ *                          type: number
+ *                      matricula:
+ *                          type: string
  *      responses:
  *          200:
  *              description: Reserva realizada

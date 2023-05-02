@@ -9,6 +9,73 @@ import { CircuitosUsuarios } from "../models/Circuitos_Usuarios.js";
 
 const circuitos = exppress.Router();
 
+/**
+ * @swagger
+ * tags:
+ *  name: Circuitos
+ *  description: Circuitos
+ * /api/getCircuitos:
+ *  post:
+ *      sumary: Obtener todos los circuitos
+ *      tags: [Circuitos]
+ *      consumes:
+ *          - application/json
+ *      parameters:
+ *          - in: body
+ *            name: Filtros
+ *            description: Filtros para obtener los circuitos
+ *            schema:
+ *                  type: object
+ *                  required:
+ *                      - pagina
+ *                      - pais
+ *                      - nombre
+ *                  properties:
+ *                      pagina:
+ *                          type: number
+ *                      pais:
+ *                          type: string
+ *                      nombre:
+ *                          type: string
+ *      responses:
+ *          200:
+ *              description: Reserva realizada
+ *              content:
+ *                  application/json:
+ *                      type: array
+ * /api/circuito/{id}:
+ *  get:
+ *      sumary: Informacion del circuito
+ *      tags: [Circuitos]
+ *      consumes:
+ *          - application/json
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: number
+ *            required: true
+ *            description: Id del circuito
+ *      responses:
+ *          200:
+ *              description: Informacion del circuito
+ *              content:
+ *                  application/json:
+ *                      type: array
+ * /api/circuitosUsuario:
+ *  get:
+ *      summary: Circuitos del que es administrador el usuario
+ *      tags: [Circuitos]
+ *      consumes:
+ *          - application/json
+ *      responses:
+ *          200:
+ *              description: Circuitos del que es administrador el usuario
+ *              content:
+ *                  application/json:
+ *                      type: array
+ */
+
 circuitos.post("/getCircuitos", async (req, res) => {
 
     const saltos = req.body.pagina * 9 - 9;

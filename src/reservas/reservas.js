@@ -42,28 +42,32 @@ const reservas = express.Router();
  *      tags: [Reservas]
  *      consumes:
  *          - application/json
- *      schema:
- *          type: object
- *          required:
- *              - id_circuito
- *              - fecha
- *              - hora_inicio
- *              - hora_fin
- *              - titulo
- *          properties:
- *              id_circuito:
- *                  type: number
- *              fecha:
- *                  type: string
- *                  format: date
- *              hora_inicio:
- *                  type: string
- *                  format: time
- *              hora_fin:
- *                  type: string
- *                  format: time
- *              titulo:
- *                  type: string
+ *      parameters:
+ *          - in: body
+ *            name: Reserva
+ *            description: Reserva
+ *            schema:
+ *                  type: object
+ *                  required:
+ *                      - id_circuito
+ *                      - fecha
+ *                      - hora_inicio
+ *                      - hora_fin
+ *                      - titulo
+ *                  properties:
+ *                      id_circuito:
+ *                          type: number
+ *                      fecha:
+ *                          type: string
+ *                          format: date
+ *                      hora_inicio:
+ *                          type: string
+ *                          format: time
+ *                      hora_fin:
+ *                          type: string
+ *                          format: time
+ *                      titulo:
+ *                          type: string
  *      responses:
  *          200:
  *              description: Cliente creado
