@@ -146,18 +146,18 @@ circuitos.get("/circuitosUsuario", async (req, res) => {
     try {
         console.log(req.headers["authentication"]);
         await verify(req.headers["authentication"]);
-        const usuario_id = await getId(req.headers["authentication"]);
+        const user_id = await getId(req.headers["authentication"]);
 
         const usuario = await Usuarios.findOne({
             where: {
-                usuario_id: usuario_id
+                user_id: user_id
             }
         });
 
         if (usuario.rol == "admin") {
             const circuitos = await CircuitosUsuarios.findAll({
                 where: {
-                    usuario_id: usuario_id
+                    user_id: user_id
                 },
             });
             const circuitoTotal = [];

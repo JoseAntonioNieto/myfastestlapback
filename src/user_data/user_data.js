@@ -40,22 +40,25 @@ user_data.get("/user_data", async (req, res) => {
     // req.headers["authentication"]
     try {
         const payload = await verify(req.headers["authentication"]);
-        const usuario_id = await getId(req.headers["authentication"]);
+        // const usuario_id = await getId(req.headers["authentication"]);
+        const user_id = await getId(req.headers["authentication"]);
         const rol = 'usuario';
         let usuario;
         const cantidad = await Usuarios.count({
             where: {
-                usuario_id: usuario_id
+                // usuario_id: usuario_id
+                user_id: user_id
             }
         });
 
         if (cantidad == 0) {
-            usuario = await Usuarios.create({usuario_id, rol});
+            usuario = await Usuarios.create({user_id, rol});
         }
 
         res.status(200).json(payload);
     } catch (err) {
         res.status(401).send(err.message);
+        console.log(err);
     }
 });
 

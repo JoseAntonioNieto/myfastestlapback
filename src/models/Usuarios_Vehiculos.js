@@ -6,7 +6,7 @@ export const UsuariosVehiculos = sequelize.define('usuarios_vehiculo', {
         type: DataTypes.STRING,
         primaryKey: true
     },
-    usuario_id: {
+    user_id: {
         type: DataTypes.INTEGER,
         primaryKey: true
     }

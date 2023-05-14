@@ -76,7 +76,7 @@ const vehiculos = express.Router();
 vehiculos.post("/vehiculos", async (req, res) => {
     try {
         await verify(req.headers["authentication"]);
-        const usuario_id = await getId(req.headers["authentication"]);
+        const user_id = await getId(req.headers["authentication"]);
 
         const vehiculo_existe = await Vehiculos.count({
             where: {
@@ -94,7 +94,7 @@ vehiculos.post("/vehiculos", async (req, res) => {
     
             await UsuariosVehiculos.create({
                 matricula: req.body.matricula,
-                usuario_id: usuario_id
+                user_id: user_id
             });
     
             res.status(200).json({
@@ -116,10 +116,10 @@ vehiculos.post("/vehiculos", async (req, res) => {
 vehiculos.get("/vehiculos", async (req, res) => {
     try {
         await verify(req.headers["authentication"]);
-        const usuario_id = await getId(req.headers["authentication"]);
+        const user_id = await getId(req.headers["authentication"]);
         const vehiculos_usuario = await UsuariosVehiculos.findAll({
             where: {
-                usuario_id: usuario_id
+                user_id: user_id
             }
         });
 
@@ -146,11 +146,11 @@ vehiculos.get("/vehiculos", async (req, res) => {
 vehiculos.delete("/vehiculos/:matricula", async (req, res) => {
     try {
         await verify(req.headers["authentication"]);
-        const usuario_id = await getId(req.headers["authentication"]);
+        const user_id = await getId(req.headers["authentication"]);
         await UsuariosVehiculos.destroy({
             where: {
                 matricula: req.params.matricula,
-                usuario_id: usuario_id
+                user_id: user_id
             }
         });
 

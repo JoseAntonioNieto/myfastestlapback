@@ -6,7 +6,7 @@ export const UsuariosReservas = sequelize.define('usuarios_reserva', {
         type: DataTypes.INTEGER,
         primaryKey: true
     },
-    usuario_id: {
+    user_id: {
         type: DataTypes.INTEGER,
         primaryKey: true
     }

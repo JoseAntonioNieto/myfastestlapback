@@ -97,7 +97,7 @@ const reservas_usuario = express.Router();
 reservas_usuario.get("/usuario/reservas", async (req, res) => {
     try {
         await verify(req.headers["authentication"]);
-        const usuario_id = await getId(req.headers["authentication"]);
+        const user_id = await getId(req.headers["authentication"]);
 
         const date = new Date();
 
@@ -107,7 +107,7 @@ reservas_usuario.get("/usuario/reservas", async (req, res) => {
 
         const reservas_usuario = await UsuariosReservas.findAll({
             where: {
-                usuario_id: usuario_id
+                user_id: user_id
             }
         });
 
@@ -146,13 +146,13 @@ reservas_usuario.get("/usuario/reservas", async (req, res) => {
 reservas_usuario.post("/usuario/reservas", async (req, res) => {
     try {
         await verify(req.headers["authentication"]);
-        const usuario_id = await getId(req.headers["authentication"]);
+        const user_id = await getId(req.headers["authentication"]);
 
         let respuesta;
 
         const usuarioHaReservado = await UsuariosReservas.count({
             where: {
-                usuario_id: usuario_id,
+                user_id: user_id,
                 id_reserva: req.body.id_reserva
             }
         })
@@ -166,7 +166,7 @@ reservas_usuario.post("/usuario/reservas", async (req, res) => {
 
         if (usuarioHaReservado == 0 && vehiculoEstaEnReserva == 0) {
             const reserva_usuario = await UsuariosReservas.create({
-                usuario_id: usuario_id,
+                user_id: user_id,
                 id_reserva: req.body.id_reserva
             });
 
@@ -193,18 +193,18 @@ reservas_usuario.post("/usuario/reservas", async (req, res) => {
 reservas_usuario.delete("/usuario/reservas/:id_reserva", async (req, res) => {
     try {
         await verify(req.headers["authentication"]);
-        const usuario_id = await getId(req.headers["authentication"]);
+        const user_id = await getId(req.headers["authentication"]);
 
         const reserva_usuario = await UsuariosReservas.destroy({
             where: {
-                usuario_id: usuario_id,
+                user_id: user_id,
                 id_reserva: parseInt(req.params.id_reserva)
             }
         });
 
         const vehiculosDelUsuario = await UsuariosVehiculos.findAll({
             where: {
-                usuario_id: usuario_id
+                user_id: user_id
             }
         });
 
@@ -229,11 +229,11 @@ reservas_usuario.delete("/usuario/reservas/:id_reserva", async (req, res) => {
 reservas_usuario.delete("/admin/reservas/:matricula/:id_reserva", async (req, res) => {
     try {
         await verify(req.headers["authentication"]);
-        const usuario_id = await getId(req.headers["authentication"]);
+        const user_id = await getId(req.headers["authentication"]);
 
         const usuario = await Usuarios.findOne({
             where: {
-                usuario_id: usuario_id
+                user_id: user_id
             }
         });
 
@@ -249,7 +249,7 @@ reservas_usuario.delete("/admin/reservas/:matricula/:id_reserva", async (req, re
             await UsuariosReservas.destroy({
                 where: {
                     id_reserva: req.params.id_reserva,
-                    usuario_id: usuario_vehiculo.usuario_id
+                    user_id: usuario_vehiculo.user_id
                 }
             })
 
@@ -268,6 +268,7 @@ reservas_usuario.delete("/admin/reservas/:matricula/:id_reserva", async (req, re
         }
     } catch (err) {
         res.status(401).send(err.message);
+        console.log(err);
     }
 });
 

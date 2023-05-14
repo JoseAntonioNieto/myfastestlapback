@@ -37,11 +37,11 @@ const reservas_vehiculos = express.Router();
 reservas_vehiculos.get('/vehiculos/reservas/:id', async (req, res) => {
     try {
         await verify(req.headers["authentication"]);
-        const usuario_id = await getId(req.headers["authentication"]);
+        const user_id = await getId(req.headers["authentication"]);
 
         const usuario = await Usuarios.findOne({
             where: {
-                usuario_id: usuario_id
+                user_id: user_id
             }
         });
 
